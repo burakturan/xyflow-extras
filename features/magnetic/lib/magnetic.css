@@ -1,0 +1,7 @@
+/* Smooth slide between push steps. While you drag, the host gets .magnetic-repelling and every node
+   except the one you hold animates its transform. So pushed nodes glide instead of jumping, with no
+   JavaScript animation. The node you drag stays under the pointer (React Flow marks it .dragging, so
+   it is left out here). */
+.magnetic-repelling .react-flow__node:not(.dragging) {
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
