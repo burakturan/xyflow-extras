@@ -49,7 +49,18 @@ function AgentNodeImpl({ data }: NodeProps<AgentNodeType>) {
       aria-label={`${data.name} · ${data.role} · ${statusLabel}`}
       className="w-60 overflow-hidden rounded-xl border border-slate-200 bg-white"
     >
-      <Handle type="target" position={Position.Top} className="!size-1.5 !border-slate-300 !bg-white" />
+      {/* A handle on each side, id = side name. The spider-web feature attaches a thread to the side
+          facing the neighbour (left/right/top/bottom); a source+target pair per side lets a thread
+          leave one card's right and enter the other's left, etc. Tiny + neutral, don't clutter. */}
+      {(['top', 'right', 'bottom', 'left'] as const).map((side) => {
+        const pos = { top: Position.Top, right: Position.Right, bottom: Position.Bottom, left: Position.Left }[side];
+        return (
+          <span key={side}>
+            <Handle id={side} type="source" position={pos} className="!size-1.5 !border-slate-300 !bg-white" />
+            <Handle id={side} type="target" position={pos} className="!size-1.5 !border-slate-300 !bg-white" />
+          </span>
+        );
+      })}
       <div className="flex items-center gap-3 px-3 py-2.5">
         <span className="relative inline-flex">
           <span className={`flex size-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-sm font-semibold ${accentText}`}>
@@ -71,7 +82,6 @@ function AgentNodeImpl({ data }: NodeProps<AgentNodeType>) {
         <span className="truncate text-[10px] font-medium text-slate-400">{data.model}</span>
         <span className="ml-auto text-[10px] text-slate-300">@{handle}</span>
       </div>
-      <Handle type="source" position={Position.Bottom} className="!size-1.5 !border-slate-300 !bg-white" />
     </div>
   );
 }
